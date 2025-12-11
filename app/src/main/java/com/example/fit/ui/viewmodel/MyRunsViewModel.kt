@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 
 // El modelo de datos
 data class RunItem(
-    val id: Int = 0, // 0 indica que es nuevo. >0 indica que ya existe en MockAPI.
+    val id: Int = 0,
 
     @SerializedName("usuario")
     val usuario: String,
@@ -41,7 +41,7 @@ class MyRunsViewModel : ViewModel() {
     private val _uiState = MutableStateFlow(MyRunsUiState())
     val uiState: StateFlow<MyRunsUiState> = _uiState.asStateFlow()
 
-    // --- 1. READ (GET): Cargar datos de la nube ---
+
     fun loadRuns(usuario: String) {
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true, error = null) }
@@ -56,12 +56,12 @@ class MyRunsViewModel : ViewModel() {
         }
     }
 
-    // --- 2. CREATE o UPDATE: Decide qué hacer según el ID ---
+
     fun saveOrUpdateRun(item: RunItem) {
         viewModelScope.launch {
-            // Si el ID es 0, es un recorrido nuevo -> POST
+
             if (item.id == 0) {
-                // Actualización visual inmediata (Optimista)
+
                 val listaActual = _uiState.value.runs
                 _uiState.update { it.copy(runs = listOf(item) + listaActual) }
 
@@ -72,9 +72,8 @@ class MyRunsViewModel : ViewModel() {
                     println("Error creando: ${e.message}")
                 }
             } else {
-                // Si tiene ID, es un recorrido existente -> PUT (Actualizar)
 
-                // 1. Actualizamos la lista local buscando el ID y reemplazando el objeto
+
                 val listaActualizada = _uiState.value.runs.map {
                     if (it.id == item.id) item else it
                 }
@@ -91,15 +90,14 @@ class MyRunsViewModel : ViewModel() {
         }
     }
 
-    // --- 3. DELETE (DELETE): Eliminar datos ---
+
     fun deleteRun(runId: Int) {
         viewModelScope.launch {
             try {
-                // Borrado visual inmediato
+
                 val listaActualizada = _uiState.value.runs.filter { it.id != runId }
                 _uiState.update { it.copy(runs = listaActualizada) }
 
-                // Borrado en la nube
                 RetrofitClient.apiService.deleteRun(runId)
             } catch (e: Exception) {
                 println("Error eliminando: ${e.message}")
@@ -112,10 +110,8 @@ class MyRunsViewModel : ViewModel() {
     }
 
     fun onNewRunClicked() {
-        // Lógica de navegación manejada en la vista
     }
 
     fun onViewOthersClicked() {
-        // Lógica pendiente
     }
 }

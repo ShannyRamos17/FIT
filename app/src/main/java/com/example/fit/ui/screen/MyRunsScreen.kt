@@ -32,13 +32,9 @@ fun MyRunsScreen(
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
-    // --- ESTADO PARA EL DIÁLOGO DE CONFIRMACIÓN ---
-    // Controla si se muestra la ventana emergente
     var showDeleteDialog by remember { mutableStateOf(false) }
-    // Guarda temporalmente el ID que queremos borrar mientras confirmamos
     var runIdToDelete by remember { mutableStateOf<Int?>(null) }
 
-    // --- LÓGICA DEL DIÁLOGO (Ventana Emergente) ---
     if (showDeleteDialog) {
         AlertDialog(
             onDismissRequest = { showDeleteDialog = false },
@@ -55,9 +51,7 @@ fun MyRunsScreen(
                 // Botón SÍ
                 Button(
                     onClick = {
-                        // 1. Ejecutamos el borrado real
                         runIdToDelete?.let { viewModel.deleteRun(it) }
-                        // 2. Cerramos el diálogo
                         showDeleteDialog = false
                     },
                     colors = ButtonDefaults.buttonColors(containerColor = Color.Black),
@@ -67,10 +61,8 @@ fun MyRunsScreen(
                 }
             },
             dismissButton = {
-                // Botón NO
                 Button(
                     onClick = {
-                        // Solo cerramos el diálogo, no hacemos nada más
                         showDeleteDialog = false
                     },
                     colors = ButtonDefaults.buttonColors(containerColor = Color.Black),
@@ -94,8 +86,6 @@ fun MyRunsScreen(
             onNavigateToNewRun()
         },
         onRunClick = onRunClick,
-        // Al hacer click en el bote de basura, NO borramos todavía.
-        // Solo guardamos el ID y mostramos la alerta.
         onDeleteClick = { id ->
             runIdToDelete = id
             showDeleteDialog = true
@@ -190,7 +180,7 @@ fun RunCard(
         colors = CardDefaults.cardColors(containerColor = Color(0xFFE0E0E0)),
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { onClick(run) } // Click en la tarjeta para ver detalles/continuar
+            .clickable { onClick(run) }
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -209,7 +199,6 @@ fun RunCard(
                     Text(text = run.usuario, fontWeight = FontWeight.Bold, fontSize = 16.sp)
                 }
 
-                // Botón de Eliminar (Bote de basura)
                 IconButton(onClick = { onDeleteClick(run.id) }) {
                     Icon(
                         imageVector = Icons.Default.Delete,

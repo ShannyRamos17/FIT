@@ -18,14 +18,14 @@ import com.example.fit.ui.viewmodel.RunItem
 @Composable
 fun NewRunScreen(
     currentUser: String,
-    runToContinue: RunItem? = null, // <--- CAMBIO 1: Recibimos el recorrido opcional
+    runToContinue: RunItem? = null,
     viewModel: NewRunViewModel = viewModel(),
     onRunFinished: (RunItem) -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val formattedTime = viewModel.formatTime(uiState.tiempoSegundos)
 
-    // CAMBIO 2: Si recibimos un recorrido para continuar, inicializamos el ViewModel
+
     LaunchedEffect(runToContinue) {
         if (runToContinue != null) {
             viewModel.initializeWithRun(runToContinue)
@@ -43,7 +43,7 @@ fun NewRunScreen(
 
         Spacer(modifier = Modifier.height(50.dp))
 
-        // --- SECCIÓN CENTRAL: CRONÓMETRO E INFO ---
+
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Text(
                 text = formattedTime,
@@ -63,7 +63,7 @@ fun NewRunScreen(
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            // Dato extra para ver que el sensor funciona
+
             Text(
                 text = "Distancia: ${String.format("%.2f", uiState.distanciaMetros)} m",
                 fontSize = 16.sp,
@@ -71,14 +71,14 @@ fun NewRunScreen(
             )
         }
 
-        // --- SECCIÓN INFERIOR: BOTONES ---
+
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 32.dp),
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            // Botón Pausar / Reanudar
+
             Button(
                 onClick = { viewModel.onPauseClicked() },
                 modifier = Modifier.weight(1f),
@@ -92,10 +92,9 @@ fun NewRunScreen(
                 )
             }
 
-            // Botón Detener
             Button(
                 onClick = {
-                    // CAMBIO 3: Calculamos el ID. Si es 0 es nuevo, si tiene ID es actualización.
+
                     val originalId = runToContinue?.id ?: 0
 
                     viewModel.onStopClicked(currentUser, originalId) { resultado ->

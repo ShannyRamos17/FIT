@@ -21,7 +21,7 @@ import com.example.fit.ui.viewmodel.RunItem
 fun RunDetailScreen(
     run: RunItem,
     onBackClick: () -> Unit,
-    onContinueClick: (RunItem) -> Unit // <--- 1. Nuevo parámetro para la acción
+    onContinueClick: (RunItem) -> Unit
 ) {
     Scaffold(
         topBar = {
@@ -41,7 +41,7 @@ fun RunDetailScreen(
                 )
             )
         },
-        // <--- 2. Agregamos la barra inferior con el botón
+
         bottomBar = {
             ContainerBottomBar {
                 Button(
@@ -101,7 +101,7 @@ fun RunDetailScreen(
     }
 }
 
-// Contenedor auxiliar para darle estilo al área del botón
+
 @Composable
 fun ContainerBottomBar(content: @Composable () -> Unit) {
     Row(

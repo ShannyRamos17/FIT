@@ -29,7 +29,7 @@ class RegisterViewModel : ViewModel() {
     }
 
     fun onRegistrarClick() {
-        // Aquí iría la validación (ej. si las contraseñas coinciden) y el registro
+
         println("Registrando usuario: ${_uiState.value.usuario}")
     }
 

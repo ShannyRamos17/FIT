@@ -23,7 +23,6 @@ import com.example.fit.ui.viewmodel.RegisterUiState
 fun RegisterScreen(
     viewModel: RegisterViewModel = viewModel(),
     onNavigateBack: () -> Unit,
-    // --- NUEVO: Enviamos usuario y contraseña al terminar ---
     onRegistrationSuccess: (String, String) -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -34,8 +33,7 @@ fun RegisterScreen(
         onContrasenaChange = { viewModel.onContrasenaChange(it) },
         onConfirmarContrasenaChange = { viewModel.onConfirmarContrasenaChange(it) },
         onRegistrarClick = {
-            viewModel.onRegistrarClick() // Guarda datos (simulado)
-            // --- NUEVO: Ejecutamos la navegación enviando los datos ---
+            viewModel.onRegistrarClick()
             onRegistrationSuccess(uiState.usuario, uiState.contrasena)
         },
         onCancelarClick = {
@@ -63,7 +61,7 @@ fun RegisterContent(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // Título "Registro"
+
         Text(
             text = "Registro",
             fontSize = 32.sp,
@@ -89,7 +87,6 @@ fun RegisterContent(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Campo 2: Contraseña
         OutlinedTextField(
             value = uiState.contrasena,
             onValueChange = onContrasenaChange,
@@ -108,7 +105,7 @@ fun RegisterContent(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Campo 3: Repetir Contraseña
+
         OutlinedTextField(
             value = uiState.confirmarContrasena,
             onValueChange = onConfirmarContrasenaChange,
@@ -128,12 +125,12 @@ fun RegisterContent(
 
         Spacer(modifier = Modifier.height(32.dp))
 
-        // Botones
+
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            // Botón Cancelar
+
             Button(
                 onClick = onCancelarClick,
                 modifier = Modifier.weight(1f),
@@ -143,7 +140,6 @@ fun RegisterContent(
                 Text(text = "Cancelar", color = Color.White)
             }
 
-            // Botón Registrarse
             Button(
                 onClick = onRegistrarClick,
                 modifier = Modifier.weight(1f),
